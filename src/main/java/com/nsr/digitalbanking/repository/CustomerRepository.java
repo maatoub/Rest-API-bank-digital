@@ -1,5 +1,9 @@
 package com.nsr.digitalbanking.repository;
 
-public class CustomerRepository {
-    
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.nsr.digitalbanking.model.Customer;
+
+public interface CustomerRepository extends JpaRepository<Customer, Long> {
+
 }
