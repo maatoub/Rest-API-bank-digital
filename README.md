@@ -1,3 +1,5 @@
+bank banking is a rest api developed in spring boot
+
 To build the project, ensure you have the following prerequisites:
 
 - Java 17
