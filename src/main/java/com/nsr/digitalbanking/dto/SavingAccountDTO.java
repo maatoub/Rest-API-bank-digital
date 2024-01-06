@@ -17,6 +17,6 @@ public class SavingAccountDTO extends BankAccountDTO {
     private double balance;
     @Enumerated(EnumType.STRING)
     private AccountStatus status;
-    private Customer customer;
+    private CustomerDTO customerDto;
     private double interestRate;
 }
