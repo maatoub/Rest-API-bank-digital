@@ -1,10 +1,5 @@
 package com.nsr.digitalbanking.dto;
-
-import org.hibernate.mapping.List;
-
 import com.nsr.digitalbanking.enums.AccountStatus;
-import com.nsr.digitalbanking.model.Customer;
-
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
