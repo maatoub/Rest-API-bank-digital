@@ -17,8 +17,10 @@ import com.nsr.digitalbanking.mapper.BankAccountMapper;
 import com.nsr.digitalbanking.mapper.CustomerMapper;
 import com.nsr.digitalbanking.model.BankAccount;
 import com.nsr.digitalbanking.model.CurrentAccount;
+import com.nsr.digitalbanking.model.Operation;
 import com.nsr.digitalbanking.model.SavingAccount;
 import com.nsr.digitalbanking.repository.BankAccountRepository;
+import com.nsr.digitalbanking.repository.OperationRepository;
 import com.nsr.digitalbanking.service.BankAccountService;
 import com.nsr.digitalbanking.service.CustomerService;
 
@@ -32,6 +34,7 @@ public class BankAccountServiceImp implements BankAccountService {
 
     private BankAccountMapper mapper;
     private BankAccountRepository repoBankAccount;
+    private OperationRepository repoOperation;
     private CustomerService customerService;
     private CustomerMapper cusMapper;
 
@@ -64,8 +67,6 @@ public class BankAccountServiceImp implements BankAccountService {
 
     @Override
     public SavingAccountDTO addSavingAccount(SavingAccountDTO savingAccountDto) throws CustomerNotFound {
-        if (savingAccountDto == null)
-            new AccountNotFound("Account not found");
         SavingAccount savingAccount = mapper.toSavingAccount(savingAccountDto);
         CustomerDTO customerDTO = customerService.getCustomer(savingAccountDto.getCustomerDto().getId());
         savingAccount.setId(UUID.randomUUID().toString());
@@ -81,6 +82,36 @@ public class BankAccountServiceImp implements BankAccountService {
         CurrentAccount currentAccount = mapper.toCurrentAccount(currentAccountDto);
         CustomerDTO customerDTO = customerService.getCustomer(currentAccountDto.getCustomerDto().getId());
         currentAccount.setId(UUID.randomUUID().toString());
+        currentAccount.setCreatedAt(new Date());
+        currentAccount.setCustomer(cusMapper.toCustomer(customerDTO));
+        repoBankAccount.save(currentAccount);
+        CurrentAccountDTO saved = mapper.toCurrentAccountDTO(currentAccount);
+        return saved;
+    }
+
+    @Override
+    public void removeBankAccount(String accountID) throws AccountNotFound {
+        getBankAccount(accountID);
+        List<Operation> operations = repoOperation.findByAccountId(accountID);
+        repoOperation.deleteAll(operations);
+        repoBankAccount.deleteById(accountID);
+    }
+
+    @Override
+    public SavingAccountDTO updateSavingAccount(SavingAccountDTO savingAccountDto) throws CustomerNotFound {
+        SavingAccount savingAccount = mapper.toSavingAccount(savingAccountDto);
+        CustomerDTO customerDTO = customerService.getCustomer(savingAccountDto.getCustomerDto().getId());
+        savingAccount.setCustomer(cusMapper.toCustomer(customerDTO));
+        savingAccount.setCreatedAt(new Date());
+        repoBankAccount.save(savingAccount);
+        SavingAccountDTO saveDto = mapper.toSavingAccountDto(savingAccount);
+        return saveDto;
+    }
+
+    @Override
+    public CurrentAccountDTO updateCurrentAccount(CurrentAccountDTO currentAccountDto) throws CustomerNotFound {
+        CurrentAccount currentAccount = mapper.toCurrentAccount(currentAccountDto);
+        CustomerDTO customerDTO = customerService.getCustomer(currentAccountDto.getCustomerDto().getId());
         currentAccount.setCreatedAt(new Date());
         currentAccount.setCustomer(cusMapper.toCustomer(customerDTO));
         repoBankAccount.save(currentAccount);

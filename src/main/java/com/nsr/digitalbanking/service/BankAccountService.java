@@ -17,4 +17,10 @@ public interface BankAccountService {
 
     CurrentAccountDTO addCurrentAccount(CurrentAccountDTO currentAccount) throws CustomerNotFound;
 
+    SavingAccountDTO updateSavingAccount(SavingAccountDTO savingAccount) throws CustomerNotFound;
+
+    CurrentAccountDTO updateCurrentAccount(CurrentAccountDTO currentAccount) throws CustomerNotFound;
+
+    void removeBankAccount(String accountID) throws AccountNotFound;
+
 }

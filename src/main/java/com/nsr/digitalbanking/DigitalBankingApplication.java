@@ -27,7 +27,7 @@ public class DigitalBankingApplication {
 		SpringApplication.run(DigitalBankingApplication.class, args);
 	}
 
-	@Bean
+	//@Bean
 	CommandLineRunner commandLineRunner(
 			CustomerRepository repoCustomer,
 			BankAccountRepository repoAccount,
