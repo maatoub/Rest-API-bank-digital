@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nsr.digitalbanking.dto.BankAccountDTO;
 import com.nsr.digitalbanking.dto.CurrentAccountDTO;
 import com.nsr.digitalbanking.dto.SavingAccountDTO;
-import com.nsr.digitalbanking.exception.AccountNotFound;
-import com.nsr.digitalbanking.exception.CustomerNotFound;
+import com.nsr.digitalbanking.exception.AccountNotFoundException;
+import com.nsr.digitalbanking.exception.CustomerNotFoundException;
 import com.nsr.digitalbanking.service.BankAccountService;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -29,36 +29,36 @@ public class BankAccountController {
     }
 
     @GetMapping("/{accountId}")
-    public BankAccountDTO getBankAccount(@PathVariable String accountId) throws AccountNotFound {
+    public BankAccountDTO getBankAccount(@PathVariable String accountId) throws AccountNotFoundException {
         return service.getBankAccount(accountId);
     }
 
     @PostMapping("/sa")
-    public SavingAccountDTO saveSavingAccount(@RequestBody SavingAccountDTO savingAccount) throws CustomerNotFound {
+    public SavingAccountDTO saveSavingAccount(@RequestBody SavingAccountDTO savingAccount) throws CustomerNotFoundException {
         return service.addSavingAccount(savingAccount);
     }
 
     @PostMapping("/ca")
-    public CurrentAccountDTO saveCurrentAccount(@RequestBody CurrentAccountDTO accountDTO) throws CustomerNotFound {
+    public CurrentAccountDTO saveCurrentAccount(@RequestBody CurrentAccountDTO accountDTO) throws CustomerNotFoundException {
         return service.addCurrentAccount(accountDTO);
     }
 
     @PutMapping("/update/sa/{id}")
     public SavingAccountDTO updateSaveCurrentAccount(@RequestBody SavingAccountDTO accountDTO, @PathVariable String id)
-            throws CustomerNotFound {
+            throws CustomerNotFoundException {
         accountDTO.setId(id);
         return service.updateSavingAccount(accountDTO);
     }
 
     @PutMapping("/update/ca/{id}")
     public CurrentAccountDTO updateCurrentAccount(@RequestBody CurrentAccountDTO accountDTO, @PathVariable String id)
-            throws CustomerNotFound {
+            throws CustomerNotFoundException {
         accountDTO.setId(id);
         return service.updateCurrentAccount(accountDTO);
     }
 
     @DeleteMapping("/delete/{id}")
-    public String deleteAccount(@PathVariable String id) throws AccountNotFound {
+    public String deleteAccount(@PathVariable String id) throws AccountNotFoundException {
         service.removeBankAccount(id);
         return "Account " + id + " has been deleted";
     }

@@ -25,6 +25,7 @@ public class Operation {
     private double amount;
     @Enumerated(EnumType.STRING)
     private OperationType type;
+    private String motif;
     @ManyToOne
     private BankAccount account;
 }

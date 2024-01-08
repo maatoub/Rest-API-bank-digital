@@ -11,8 +11,8 @@ import com.nsr.digitalbanking.dto.BankAccountDTO;
 import com.nsr.digitalbanking.dto.CurrentAccountDTO;
 import com.nsr.digitalbanking.dto.CustomerDTO;
 import com.nsr.digitalbanking.dto.SavingAccountDTO;
-import com.nsr.digitalbanking.exception.AccountNotFound;
-import com.nsr.digitalbanking.exception.CustomerNotFound;
+import com.nsr.digitalbanking.exception.AccountNotFoundException;
+import com.nsr.digitalbanking.exception.CustomerNotFoundException;
 import com.nsr.digitalbanking.mapper.BankAccountMapper;
 import com.nsr.digitalbanking.mapper.CustomerMapper;
 import com.nsr.digitalbanking.model.BankAccount;
@@ -53,9 +53,9 @@ public class BankAccountServiceImp implements BankAccountService {
     }
 
     @Override
-    public BankAccountDTO getBankAccount(String accountID) throws AccountNotFound {
+    public BankAccountDTO getBankAccount(String accountID) throws AccountNotFoundException {
         BankAccount account = repoBankAccount.findById(accountID)
-                .orElseThrow(() -> new AccountNotFound("Account not found"));
+                .orElseThrow(() -> new AccountNotFoundException("Account not found"));
         if (account instanceof SavingAccount) {
             SavingAccount savingAccount = (SavingAccount) account;
             return mapper.toSavingAccountDto(savingAccount);
@@ -66,7 +66,7 @@ public class BankAccountServiceImp implements BankAccountService {
     }
 
     @Override
-    public SavingAccountDTO addSavingAccount(SavingAccountDTO savingAccountDto) throws CustomerNotFound {
+    public SavingAccountDTO addSavingAccount(SavingAccountDTO savingAccountDto) throws CustomerNotFoundException {
         SavingAccount savingAccount = mapper.toSavingAccount(savingAccountDto);
         CustomerDTO customerDTO = customerService.getCustomer(savingAccountDto.getCustomerDto().getId());
         savingAccount.setId(UUID.randomUUID().toString());
@@ -78,7 +78,7 @@ public class BankAccountServiceImp implements BankAccountService {
     }
 
     @Override
-    public CurrentAccountDTO addCurrentAccount(CurrentAccountDTO currentAccountDto) throws CustomerNotFound {
+    public CurrentAccountDTO addCurrentAccount(CurrentAccountDTO currentAccountDto) throws CustomerNotFoundException {
         CurrentAccount currentAccount = mapper.toCurrentAccount(currentAccountDto);
         CustomerDTO customerDTO = customerService.getCustomer(currentAccountDto.getCustomerDto().getId());
         currentAccount.setId(UUID.randomUUID().toString());
@@ -90,7 +90,7 @@ public class BankAccountServiceImp implements BankAccountService {
     }
 
     @Override
-    public void removeBankAccount(String accountID) throws AccountNotFound {
+    public void removeBankAccount(String accountID) throws AccountNotFoundException {
         getBankAccount(accountID);
         List<Operation> operations = repoOperation.findByAccountId(accountID);
         repoOperation.deleteAll(operations);
@@ -98,7 +98,7 @@ public class BankAccountServiceImp implements BankAccountService {
     }
 
     @Override
-    public SavingAccountDTO updateSavingAccount(SavingAccountDTO savingAccountDto) throws CustomerNotFound {
+    public SavingAccountDTO updateSavingAccount(SavingAccountDTO savingAccountDto) throws CustomerNotFoundException {
         SavingAccount savingAccount = mapper.toSavingAccount(savingAccountDto);
         CustomerDTO customerDTO = customerService.getCustomer(savingAccountDto.getCustomerDto().getId());
         savingAccount.setCustomer(cusMapper.toCustomer(customerDTO));
@@ -109,7 +109,7 @@ public class BankAccountServiceImp implements BankAccountService {
     }
 
     @Override
-    public CurrentAccountDTO updateCurrentAccount(CurrentAccountDTO currentAccountDto) throws CustomerNotFound {
+    public CurrentAccountDTO updateCurrentAccount(CurrentAccountDTO currentAccountDto) throws CustomerNotFoundException {
         CurrentAccount currentAccount = mapper.toCurrentAccount(currentAccountDto);
         CustomerDTO customerDTO = customerService.getCustomer(currentAccountDto.getCustomerDto().getId());
         currentAccount.setCreatedAt(new Date());

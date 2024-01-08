@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.nsr.digitalbanking.dto.CustomerDTO;
-import com.nsr.digitalbanking.exception.CustomerNotFound;
+import com.nsr.digitalbanking.exception.CustomerNotFoundException;
 import com.nsr.digitalbanking.mapper.CustomerMapper;
 import com.nsr.digitalbanking.model.Customer;
 import com.nsr.digitalbanking.repository.CustomerRepository;
@@ -31,9 +31,9 @@ public class CustomerServiceImp implements CustomerService {
     }
 
     @Override
-    public CustomerDTO getCustomer(Long customerID) throws CustomerNotFound {
+    public CustomerDTO getCustomer(Long customerID) throws CustomerNotFoundException {
         Customer customer = repoCustomer.findById(customerID)
-                .orElseThrow(() -> new CustomerNotFound("Customer not found "));
+                .orElseThrow(() -> new CustomerNotFoundException("Customer not found "));
         CustomerDTO customerDTO = mapper.toCustomerDto(customer);
         return customerDTO;
     }
@@ -42,20 +42,20 @@ public class CustomerServiceImp implements CustomerService {
     public CustomerDTO saveCustomer(CustomerDTO customerDto) {
         Customer customer = mapper.toCustomer(customerDto);
         if (customer == null)
-            new CustomerNotFound("Customer not found");
+            new CustomerNotFoundException("Customer not found");
         repoCustomer.save(customer);
         CustomerDTO result = mapper.toCustomerDto(customer);
         return result;
     }
 
     @Override
-    public CustomerDTO updateCustomer(CustomerDTO customer) throws CustomerNotFound {
+    public CustomerDTO updateCustomer(CustomerDTO customer) throws CustomerNotFoundException {
         getCustomer(customer.getId());
         return saveCustomer(customer);
     }
 
     @Override
-    public void deleteCustomer(Long customerID) throws CustomerNotFound {
+    public void deleteCustomer(Long customerID) throws CustomerNotFoundException {
         getCustomer(customerID);
         repoCustomer.deleteById(customerID);
     }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nsr.digitalbanking.dto.CustomerDTO;
-import com.nsr.digitalbanking.exception.CustomerNotFound;
+import com.nsr.digitalbanking.exception.CustomerNotFoundException;
 import com.nsr.digitalbanking.service.CustomerService;
 
 import lombok.AllArgsConstructor;
@@ -30,7 +30,7 @@ public class CustomController {
     }
 
     @GetMapping("/{id}")
-    public CustomerDTO getCustomer(@PathVariable Long id) throws CustomerNotFound {
+    public CustomerDTO getCustomer(@PathVariable Long id) throws CustomerNotFoundException {
         return customerService.getCustomer(id);
     }
 
@@ -41,13 +41,13 @@ public class CustomController {
 
     @PutMapping("/update/{id}")
     public CustomerDTO updateCustomer(@PathVariable Long id, @RequestBody CustomerDTO customer)
-            throws CustomerNotFound {
+            throws CustomerNotFoundException {
         customer.setId(id);
         return customerService.updateCustomer(customer);
     }
 
     @DeleteMapping("/delete/{customerId}")
-    public String deleteCustomer(@PathVariable Long customerId) throws CustomerNotFound {
+    public String deleteCustomer(@PathVariable Long customerId) throws CustomerNotFoundException {
         customerService.deleteCustomer(customerId);
         return "Customer deleted successfully";
     }
