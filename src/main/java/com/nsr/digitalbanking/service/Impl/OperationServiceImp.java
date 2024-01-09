@@ -1,12 +1,10 @@
 package com.nsr.digitalbanking.service.Impl;
 
 import java.util.Date;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nsr.digitalbanking.dto.BankAccountDTO;
 import com.nsr.digitalbanking.enums.OperationType;
 import com.nsr.digitalbanking.exception.AccountNotFoundException;
 import com.nsr.digitalbanking.exception.BalanceInsufficientException;
@@ -18,7 +16,6 @@ import com.nsr.digitalbanking.repository.OperationRepository;
 import com.nsr.digitalbanking.service.BankAccountService;
 import com.nsr.digitalbanking.service.OperationService;
 
-import jakarta.el.ELException;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -42,7 +39,7 @@ public class OperationServiceImp implements OperationService {
         op.setMotif(motif);
         op.setAmount(amount);
         op.setOpDate(new Date());
-        op.setType(OperationType.CREDIT);
+        op.setType(OperationType.DEBIT);
         op.setAccount(account);
         repoOperation.save(op);
         account.setBalance(amountUpdate);
@@ -67,9 +64,10 @@ public class OperationServiceImp implements OperationService {
     }
 
     @Override
-    public void transfer(double amount, String destRIB, String srcRIB) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'transfer'");
+    public void transfer(double amount, String destRIB, String srcRIB,String motif) throws AccountNotFoundException, BalanceInsufficientException {
+        debit(amount, srcRIB, motif);
+        credit(amount, destRIB, motif);
+        
     }
 
 }

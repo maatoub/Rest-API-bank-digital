@@ -9,5 +9,5 @@ public interface OperationService {
 
     void credit(double amount, String rib, String motif) throws AccountNotFoundException;
 
-    void transfer(double amount, String destRIB, String srcRIB);
+    void transfer(double amount, String destRIB, String srcRIB, String motif) throws AccountNotFoundException, BalanceInsufficientException;
 }
