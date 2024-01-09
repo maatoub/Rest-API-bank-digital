@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nsr.digitalbanking.dto.OperationDTO;
 import com.nsr.digitalbanking.exception.AccountNotFoundException;
+import com.nsr.digitalbanking.exception.BalanceInsufficientException;
 import com.nsr.digitalbanking.service.OperationService;
 
 import lombok.AllArgsConstructor;
@@ -19,14 +20,14 @@ public class OperationController {
     private OperationService service;
     
     @PostMapping("/debit")
-    public String debitBalance(@RequestBody OperationDTO dto) throws AccountNotFoundException {
+    public OperationDTO debitBalance(@RequestBody OperationDTO dto) throws AccountNotFoundException, BalanceInsufficientException {
         service.debit( dto.getAmount(), dto.getId(), dto.getMotif());       
-        return "successfully ";
+        return dto;
     }
 
     @PostMapping("/credit")
     public String creditBalance(@RequestBody OperationDTO dto) throws AccountNotFoundException {
-        service.debit( dto.getAmount(), dto.getId(), dto.getMotif());       
+        service.credit( dto.getAmount(), dto.getId(), dto.getMotif());       
         return "successfully ";
     }
     

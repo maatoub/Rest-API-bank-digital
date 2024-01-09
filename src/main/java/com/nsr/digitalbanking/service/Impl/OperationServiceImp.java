@@ -32,11 +32,11 @@ public class OperationServiceImp implements OperationService {
     private BankAccountMapper accountMapper;
 
     @Override
-    public void debit(double amount, String rib, String motif) throws AccountNotFoundException {
+    public void debit(double amount, String rib, String motif) throws AccountNotFoundException, BalanceInsufficientException {
         BankAccount account = repoAccount.findById(rib)
                 .orElseThrow(() -> new AccountNotFoundException("account not found"));
         if (amount > account.getBalance())
-            new BalanceInsufficientException("Balance insufficient");
+           throw new BalanceInsufficientException("Balance insufficient");
         double amountUpdate = account.getBalance() - amount;
         Operation op = new Operation();
         op.setMotif(motif);
