@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.nsr.digitalbanking.dto.BankAccountDTO;
 import com.nsr.digitalbanking.enums.OperationType;
 import com.nsr.digitalbanking.exception.AccountNotFoundException;
+import com.nsr.digitalbanking.exception.BalanceInsufficientException;
 import com.nsr.digitalbanking.mapper.BankAccountMapper;
 import com.nsr.digitalbanking.model.BankAccount;
 import com.nsr.digitalbanking.model.Operation;
@@ -32,14 +33,27 @@ public class OperationServiceImp implements OperationService {
 
     @Override
     public void debit(double amount, String rib, String motif) throws AccountNotFoundException {
-        BankAccount account = repoAccount.findById(rib).orElseThrow(() -> new AccountNotFoundException("account not found"));
-        if(amount>account.getBalance()) return new ELException("sold account insufficient balance");
+        BankAccount account = repoAccount.findById(rib)
+                .orElseThrow(() -> new AccountNotFoundException("account not found"));
+        if (amount > account.getBalance())
+            new BalanceInsufficientException("Balance insufficient");
         double amountUpdate = account.getBalance() - amount;
+        Operation op = new Operation();
+        op.setMotif(motif);
+        op.setAmount(amount);
+        op.setOpDate(new Date());
+        op.setType(OperationType.CREDIT);
+        op.setAccount(account);
+        repoOperation.save(op);
+        account.setBalance(amountUpdate);
+        repoAccount.save(account);
+
     }
 
     @Override
     public void credit(double amount, String rib, String motif) throws AccountNotFoundException {
-        BankAccount account = repoAccount.findById(rib).orElseThrow(() -> new AccountNotFoundException("account not found"));
+        BankAccount account = repoAccount.findById(rib)
+                .orElseThrow(() -> new AccountNotFoundException("account not found"));
         double amountUpdate = account.getBalance() + amount;
         Operation op = new Operation();
         op.setMotif(motif);
