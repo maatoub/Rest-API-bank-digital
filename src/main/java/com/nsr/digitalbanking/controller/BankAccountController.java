@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nsr.digitalbanking.dto.BankAccountDTO;
@@ -19,6 +20,7 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
+@RequestMapping("/accounts")
 public class BankAccountController {
 
     private BankAccountService service;
@@ -29,7 +31,7 @@ public class BankAccountController {
     }
 
     @GetMapping("/{accountId}")
-    public BankAccountDTO getBankAccount(@PathVariable String accountId) throws AccountNotFoundException {
+    public BankAccountDTO getAccount(@PathVariable String accountId) throws AccountNotFoundException {
         return service.getBankAccount(accountId);
     }
 
@@ -44,7 +46,7 @@ public class BankAccountController {
     }
 
     @PutMapping("/update/sa/{id}")
-    public SavingAccountDTO updateSaveCurrentAccount(@RequestBody SavingAccountDTO accountDTO, @PathVariable String id)
+    public SavingAccountDTO updateSavingAccount(@RequestBody SavingAccountDTO accountDTO, @PathVariable String id)
             throws CustomerNotFoundException {
         accountDTO.setId(id);
         return service.updateSavingAccount(accountDTO);
