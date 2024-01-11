@@ -8,8 +8,6 @@ import java.util.stream.Stream;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-
 import com.nsr.digitalbanking.enums.AccountStatus;
 import com.nsr.digitalbanking.enums.OperationType;
 import com.nsr.digitalbanking.model.CurrentAccount;

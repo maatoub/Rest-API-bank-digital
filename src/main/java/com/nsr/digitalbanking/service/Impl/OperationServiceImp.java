@@ -8,12 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.nsr.digitalbanking.enums.OperationType;
 import com.nsr.digitalbanking.exception.AccountNotFoundException;
 import com.nsr.digitalbanking.exception.BalanceInsufficientException;
-import com.nsr.digitalbanking.mapper.BankAccountMapper;
 import com.nsr.digitalbanking.model.BankAccount;
 import com.nsr.digitalbanking.model.Operation;
 import com.nsr.digitalbanking.repository.BankAccountRepository;
 import com.nsr.digitalbanking.repository.OperationRepository;
-import com.nsr.digitalbanking.service.BankAccountService;
 import com.nsr.digitalbanking.service.OperationService;
 
 import lombok.AllArgsConstructor;
@@ -24,16 +22,15 @@ import lombok.AllArgsConstructor;
 public class OperationServiceImp implements OperationService {
 
     private OperationRepository repoOperation;
-    private BankAccountService accountService;
     private BankAccountRepository repoAccount;
-    private BankAccountMapper accountMapper;
 
     @Override
-    public void debit(double amount, String rib, String motif) throws AccountNotFoundException, BalanceInsufficientException {
+    public void debit(double amount, String rib, String motif)
+            throws AccountNotFoundException, BalanceInsufficientException {
         BankAccount account = repoAccount.findById(rib)
                 .orElseThrow(() -> new AccountNotFoundException("account not found"));
         if (amount > account.getBalance())
-           throw new BalanceInsufficientException("Balance insufficient");
+            throw new BalanceInsufficientException("Balance insufficient");
         double amountUpdate = account.getBalance() - amount;
         Operation op = new Operation();
         op.setMotif(motif);
@@ -64,10 +61,11 @@ public class OperationServiceImp implements OperationService {
     }
 
     @Override
-    public void transfer(double amount, String destRIB, String srcRIB,String motif) throws AccountNotFoundException, BalanceInsufficientException {
+    public void transfer(double amount, String destRIB, String srcRIB, String motif)
+            throws AccountNotFoundException, BalanceInsufficientException {
         debit(amount, srcRIB, motif);
         credit(amount, destRIB, motif);
-        
+
     }
 
 }

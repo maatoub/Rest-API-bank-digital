@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import com.nsr.digitalbanking.dto.CustomerDTO;
 import com.nsr.digitalbanking.exception.CustomerNotFoundException;
 import com.nsr.digitalbanking.mapper.CustomerMapper;
+import com.nsr.digitalbanking.model.BankAccount;
 import com.nsr.digitalbanking.model.Customer;
+import com.nsr.digitalbanking.repository.BankAccountRepository;
 import com.nsr.digitalbanking.repository.CustomerRepository;
 import com.nsr.digitalbanking.service.CustomerService;
 import lombok.AllArgsConstructor;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomerServiceImp implements CustomerService {
 
     private CustomerMapper mapper;
+    private BankAccountRepository repoAccount;
     private CustomerRepository repoCustomer;
 
     @Override
@@ -56,6 +59,8 @@ public class CustomerServiceImp implements CustomerService {
 
     @Override
     public void deleteCustomer(Long customerID) throws CustomerNotFoundException {
+        List<BankAccount> accounts = repoAccount.findByCustomerId(customerID);
+        repoAccount.deleteAll(accounts);
         getCustomer(customerID);
         repoCustomer.deleteById(customerID);
     }
