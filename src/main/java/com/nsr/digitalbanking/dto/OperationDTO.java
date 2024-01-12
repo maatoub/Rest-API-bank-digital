@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 public class OperationDTO {
-    private String id;
+    private Long id;
     private Date opDate;
     private double amount;
     private String motif;

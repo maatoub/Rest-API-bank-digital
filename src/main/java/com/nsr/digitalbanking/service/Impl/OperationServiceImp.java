@@ -46,8 +46,9 @@ public class OperationServiceImp implements OperationService {
         op.setAccount(account);
         repoOperation.save(op);
         account.setBalance(amountUpdate);
+        mapper.tOperationDTO(op);
         repoAccount.save(account);
-
+        
     }
 
     @Override

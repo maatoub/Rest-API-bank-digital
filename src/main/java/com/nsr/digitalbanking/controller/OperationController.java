@@ -3,6 +3,7 @@ package com.nsr.digitalbanking.controller;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import com.nsr.digitalbanking.dto.OperationDTO;
+import com.nsr.digitalbanking.dto.OperationRequest;
 import com.nsr.digitalbanking.dto.TransferDTO;
 import com.nsr.digitalbanking.exception.AccountNotFoundException;
 import com.nsr.digitalbanking.exception.BalanceInsufficientException;
@@ -22,17 +23,17 @@ public class OperationController {
     private OperationService service;
 
     @PostMapping("/debit")
-    public OperationDTO debitBalance(@RequestBody OperationDTO dto)
+    public OperationRequest debitBalance(@RequestBody OperationRequest request)
             throws AccountNotFoundException,
             BalanceInsufficientException {
-        service.debit(dto.getAmount(), dto.getId(), dto.getMotif());
-        return dto;
+        service.debit(request.getAmount(), request.getRib(), request.getMotif());
+        return request;
     }
 
     @PostMapping("/credit")
-    public String creditBalance(@RequestBody OperationDTO dto) throws AccountNotFoundException {
-        service.credit(dto.getAmount(), dto.getId(), dto.getMotif());
-        return "successfully ";
+    public OperationRequest creditBalance(@RequestBody OperationRequest request) throws AccountNotFoundException {
+        service.credit(request.getAmount(), request.getRib(), request.getMotif());
+        return request;
     }
 
     @PostMapping("/transfer")

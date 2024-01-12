@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 import com.nsr.digitalbanking.enums.AccountStatus;
 import com.nsr.digitalbanking.enums.OperationType;
 import com.nsr.digitalbanking.model.CurrentAccount;
@@ -41,7 +42,7 @@ public class DigitalBankingApplication {
 
 			List<Customer> customers = repoCustomer.findAll();
 			customers.forEach(cus -> {
-				for (int index = 0; index < 5; index++) {
+				for (int index = 0; index < 2; index++) {
 					CurrentAccount currentAccount = new CurrentAccount();
 					currentAccount.setCustomer(cus);
 					currentAccount.setBalance(Math.random() * 56923);
@@ -55,7 +56,7 @@ public class DigitalBankingApplication {
 			});
 
 			customers.forEach(cus -> {
-				for (int index = 0; index < 5; index++) {
+				for (int index = 0; index < 2; index++) {
 					SavingAccount savingAccount = new SavingAccount();
 					savingAccount.setCustomer(cus);
 					savingAccount.setBalance(Math.random() * 55923);
@@ -70,7 +71,7 @@ public class DigitalBankingApplication {
 			/* **************** */
 
 			repoAccount.findAll().forEach(acc -> {
-				for (int index = 0; index < 5; index++) {
+				for (int index = 0; index < 2; index++) {
 					Operation op = new Operation();
 					op.setAccount(acc);
 					op.setAmount(Math.random() * 20000);
