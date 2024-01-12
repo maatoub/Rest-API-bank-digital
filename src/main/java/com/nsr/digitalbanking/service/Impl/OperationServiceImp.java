@@ -1,13 +1,18 @@
 package com.nsr.digitalbanking.service.Impl;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nsr.digitalbanking.dto.OperationDTO;
 import com.nsr.digitalbanking.enums.OperationType;
 import com.nsr.digitalbanking.exception.AccountNotFoundException;
 import com.nsr.digitalbanking.exception.BalanceInsufficientException;
+import com.nsr.digitalbanking.mapper.OperationMapper;
 import com.nsr.digitalbanking.model.BankAccount;
 import com.nsr.digitalbanking.model.Operation;
 import com.nsr.digitalbanking.repository.BankAccountRepository;
@@ -23,6 +28,7 @@ public class OperationServiceImp implements OperationService {
 
     private OperationRepository repoOperation;
     private BankAccountRepository repoAccount;
+    private OperationMapper mapper;
 
     @Override
     public void debit(double amount, String rib, String motif)
@@ -65,7 +71,13 @@ public class OperationServiceImp implements OperationService {
             throws AccountNotFoundException, BalanceInsufficientException {
         debit(amount, srcRIB, motif);
         credit(amount, destRIB, motif);
+    }
 
+    @Override
+    public List<OperationDTO> accountHistory(String accountID) {
+        List<OperationDTO> accounts = repoOperation.findByAccountId(accountID).stream()
+                .map(op -> mapper.tOperationDTO(op)).collect(Collectors.toList());
+        return accounts;
     }
 
 }

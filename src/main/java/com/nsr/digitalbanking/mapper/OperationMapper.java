@@ -9,7 +9,7 @@ import com.nsr.digitalbanking.model.Operation;
 @Service
 public class OperationMapper {
 
-    OperationDTO tOperationDTO(Operation operation) {
+    public OperationDTO tOperationDTO(Operation operation) {
         OperationDTO dto = new OperationDTO();
         BeanUtils.copyProperties(operation, dto);
         return dto;

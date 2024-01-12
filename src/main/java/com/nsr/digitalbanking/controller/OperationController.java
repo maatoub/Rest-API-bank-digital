@@ -1,7 +1,7 @@
 package com.nsr.digitalbanking.controller;
 
 import org.springframework.web.bind.annotation.RestController;
-
+import java.util.List;
 import com.nsr.digitalbanking.dto.OperationDTO;
 import com.nsr.digitalbanking.dto.TransferDTO;
 import com.nsr.digitalbanking.exception.AccountNotFoundException;
@@ -10,6 +10,8 @@ import com.nsr.digitalbanking.service.OperationService;
 
 import lombok.AllArgsConstructor;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -39,5 +41,10 @@ public class OperationController {
             BalanceInsufficientException {
         service.transfer(dto.getAmount(), dto.getRibDest(), dto.getRibSrc(), dto.getMotif());
         return dto;
+    }
+
+    @GetMapping("/history/{accountID}")
+    public List<OperationDTO> getHistoryAccount(@PathVariable String accountID) {
+        return service.accountHistory(accountID);
     }
 }
