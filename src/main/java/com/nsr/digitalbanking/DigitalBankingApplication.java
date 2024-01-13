@@ -74,6 +74,7 @@ public class DigitalBankingApplication {
 				for (int index = 0; index < 2; index++) {
 					Operation op = new Operation();
 					op.setAccount(acc);
+					op.setMotif("ver");
 					op.setAmount(Math.random() * 20000);
 					op.setOpDate(new Date());
 					op.setType(Math.random() > 0.5 ? OperationType.CREDIT : OperationType.DEBIT);

@@ -3,11 +3,13 @@ package com.nsr.digitalbanking.service.Impl;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nsr.digitalbanking.dto.operationDto.HistoryAccountDTO;
 import com.nsr.digitalbanking.dto.operationDto.OperationDTO;
 import com.nsr.digitalbanking.enums.OperationType;
 import com.nsr.digitalbanking.exception.AccountNotFoundException;
@@ -48,7 +50,7 @@ public class OperationServiceImp implements OperationService {
         account.setBalance(amountUpdate);
         mapper.tOperationDTO(op);
         repoAccount.save(account);
-        
+
     }
 
     @Override
@@ -78,7 +80,31 @@ public class OperationServiceImp implements OperationService {
     public List<OperationDTO> accountHistory(String accountID) {
         List<OperationDTO> accounts = repoOperation.findByAccountId(accountID).stream()
                 .map(op -> mapper.tOperationDTO(op)).collect(Collectors.toList());
+        if (accounts.size() == 0)
+            new AccountNotFoundException("Account not found");
         return accounts;
+    }
+
+    @Override
+    public HistoryAccountDTO accountDetailsHistory(String accountID, int page, int size)
+            throws AccountNotFoundException {
+        BankAccount account = repoAccount.findById(accountID)
+                .orElseThrow(() -> new AccountNotFoundException("Account not found"));
+
+        Page<Operation> operations = repoOperation.findByAccountId(accountID, PageRequest.of(page, size));
+        List<OperationDTO> operationsDto = operations.getContent().stream().map(op -> mapper.tOperationDTO(op))
+                .collect(Collectors.toList());
+
+        HistoryAccountDTO historyAcc = new HistoryAccountDTO();
+        historyAcc.setBalance(account.getBalance());
+        historyAcc.setCurrentPage(page);
+        historyAcc.setName(account.getCustomer().getName());
+        historyAcc.setRIB(account.getId());
+        historyAcc.setSizePage(size);
+        historyAcc.setOperationsDTO(operationsDto);
+        historyAcc.setTotalPage(operations.getTotalPages());
+
+        return historyAcc;
     }
 
 }
