@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nsr.digitalbanking.dto.OperationDTO;
+import com.nsr.digitalbanking.dto.operationDto.OperationDTO;
 import com.nsr.digitalbanking.enums.OperationType;
 import com.nsr.digitalbanking.exception.AccountNotFoundException;
 import com.nsr.digitalbanking.exception.BalanceInsufficientException;

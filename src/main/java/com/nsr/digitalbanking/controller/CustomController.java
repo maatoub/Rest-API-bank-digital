@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nsr.digitalbanking.dto.CustomerDTO;
+import com.nsr.digitalbanking.dto.customerDto.CustomerDTO;
 import com.nsr.digitalbanking.exception.CustomerNotFoundException;
 import com.nsr.digitalbanking.service.CustomerService;
 

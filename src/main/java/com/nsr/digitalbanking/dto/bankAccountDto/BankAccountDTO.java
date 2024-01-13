@@ -1,4 +1,4 @@
-package com.nsr.digitalbanking.dto;
+package com.nsr.digitalbanking.dto.bankAccountDto;
 
 import lombok.Data;
 

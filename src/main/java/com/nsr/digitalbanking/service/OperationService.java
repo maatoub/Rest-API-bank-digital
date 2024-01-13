@@ -2,7 +2,7 @@ package com.nsr.digitalbanking.service;
 
 import java.util.List;
 
-import com.nsr.digitalbanking.dto.OperationDTO;
+import com.nsr.digitalbanking.dto.operationDto.OperationDTO;
 import com.nsr.digitalbanking.exception.AccountNotFoundException;
 import com.nsr.digitalbanking.exception.BalanceInsufficientException;
 

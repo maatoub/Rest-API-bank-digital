@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.nsr.digitalbanking.dto.CustomerDTO;
+import com.nsr.digitalbanking.dto.customerDto.CustomerDTO;
 import com.nsr.digitalbanking.exception.CustomerNotFoundException;
 import com.nsr.digitalbanking.mapper.CustomerMapper;
 import com.nsr.digitalbanking.model.BankAccount;

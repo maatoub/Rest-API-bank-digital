@@ -3,8 +3,8 @@ package com.nsr.digitalbanking.mapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import com.nsr.digitalbanking.dto.CurrentAccountDTO;
-import com.nsr.digitalbanking.dto.SavingAccountDTO;
+import com.nsr.digitalbanking.dto.bankAccountDto.CurrentAccountDTO;
+import com.nsr.digitalbanking.dto.bankAccountDto.SavingAccountDTO;
 import com.nsr.digitalbanking.model.CurrentAccount;
 import com.nsr.digitalbanking.model.SavingAccount;
 import lombok.AllArgsConstructor;

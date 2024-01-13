@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nsr.digitalbanking.dto.BankAccountDTO;
-import com.nsr.digitalbanking.dto.CurrentAccountDTO;
-import com.nsr.digitalbanking.dto.SavingAccountDTO;
+import com.nsr.digitalbanking.dto.bankAccountDto.BankAccountDTO;
+import com.nsr.digitalbanking.dto.bankAccountDto.CurrentAccountDTO;
+import com.nsr.digitalbanking.dto.bankAccountDto.SavingAccountDTO;
 import com.nsr.digitalbanking.exception.AccountNotFoundException;
 import com.nsr.digitalbanking.exception.CustomerNotFoundException;
 import com.nsr.digitalbanking.service.BankAccountService;

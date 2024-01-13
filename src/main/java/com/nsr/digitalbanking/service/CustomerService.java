@@ -2,7 +2,7 @@ package com.nsr.digitalbanking.service;
 
 import java.util.List;
 
-import com.nsr.digitalbanking.dto.CustomerDTO;
+import com.nsr.digitalbanking.dto.customerDto.CustomerDTO;
 import com.nsr.digitalbanking.exception.CustomerNotFoundException;
 
 public interface CustomerService {

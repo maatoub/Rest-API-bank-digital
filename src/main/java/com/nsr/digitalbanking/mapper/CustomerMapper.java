@@ -3,7 +3,7 @@ package com.nsr.digitalbanking.mapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import com.nsr.digitalbanking.dto.CustomerDTO;
+import com.nsr.digitalbanking.dto.customerDto.CustomerDTO;
 import com.nsr.digitalbanking.model.Customer;
 
 @Service

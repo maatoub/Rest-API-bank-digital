@@ -1,5 +1,6 @@
-package com.nsr.digitalbanking.dto;
+package com.nsr.digitalbanking.dto.bankAccountDto;
 
+import com.nsr.digitalbanking.dto.customerDto.CustomerDTO;
 import com.nsr.digitalbanking.enums.AccountStatus;
 import java.util.*;
 import jakarta.persistence.EnumType;

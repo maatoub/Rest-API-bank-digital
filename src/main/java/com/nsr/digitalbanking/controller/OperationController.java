@@ -2,9 +2,10 @@ package com.nsr.digitalbanking.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
-import com.nsr.digitalbanking.dto.OperationDTO;
-import com.nsr.digitalbanking.dto.OperationRequest;
-import com.nsr.digitalbanking.dto.TransferDTO;
+
+import com.nsr.digitalbanking.dto.operationDto.OperationDTO;
+import com.nsr.digitalbanking.dto.operationDto.OperationRequest;
+import com.nsr.digitalbanking.dto.operationDto.TransferDTO;
 import com.nsr.digitalbanking.exception.AccountNotFoundException;
 import com.nsr.digitalbanking.exception.BalanceInsufficientException;
 import com.nsr.digitalbanking.service.OperationService;

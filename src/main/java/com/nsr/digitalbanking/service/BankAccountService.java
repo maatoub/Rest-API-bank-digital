@@ -2,9 +2,9 @@ package com.nsr.digitalbanking.service;
 
 import java.util.List;
 
-import com.nsr.digitalbanking.dto.BankAccountDTO;
-import com.nsr.digitalbanking.dto.CurrentAccountDTO;
-import com.nsr.digitalbanking.dto.SavingAccountDTO;
+import com.nsr.digitalbanking.dto.bankAccountDto.BankAccountDTO;
+import com.nsr.digitalbanking.dto.bankAccountDto.CurrentAccountDTO;
+import com.nsr.digitalbanking.dto.bankAccountDto.SavingAccountDTO;
 import com.nsr.digitalbanking.exception.AccountNotFoundException;
 import com.nsr.digitalbanking.exception.CustomerNotFoundException;
 
