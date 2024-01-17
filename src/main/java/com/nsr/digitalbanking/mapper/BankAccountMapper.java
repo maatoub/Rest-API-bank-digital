@@ -4,7 +4,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.nsr.digitalbanking.dto.bankAccountDto.CurrentAccountDTO;
-import com.nsr.digitalbanking.dto.bankAccountDto.CustomerAccDetailsDTO;
+import com.nsr.digitalbanking.dto.bankAccountDto.AccountsOfCustomerDTO;
 import com.nsr.digitalbanking.dto.bankAccountDto.SavingAccountDTO;
 import com.nsr.digitalbanking.model.CurrentAccount;
 import com.nsr.digitalbanking.model.SavingAccount;
@@ -47,24 +47,18 @@ public class BankAccountMapper {
         return account;
     }
 
-    public CustomerAccDetailsDTO toCustomerSavingAccountDto(SavingAccount account) {
-        CustomerAccDetailsDTO detailsDTO = new CustomerAccDetailsDTO();
-        detailsDTO.setDate(account.getCreatedAt());
-        detailsDTO.setRIB(account.getId());
-        detailsDTO.setStatus(account.getStatus());
-        detailsDTO.setType(account.getClass().getSimpleName());
-        detailsDTO.setCustomerDTO(customerMapper.toCustomerDto(account.getCustomer()));
-        return detailsDTO;
+    public AccountsOfCustomerDTO toSACustomerDTO(SavingAccount account) {
+        AccountsOfCustomerDTO aCustomerDTO = new AccountsOfCustomerDTO();
+        
+        return aCustomerDTO;
     }
 
-    public CustomerAccDetailsDTO toCustomerCurrentAccountDto(CurrentAccount account) {
-        CustomerAccDetailsDTO detailsDTO = new CustomerAccDetailsDTO();
-        detailsDTO.setDate(account.getCreatedAt());
-        detailsDTO.setRIB(account.getId());
-        detailsDTO.setStatus(account.getStatus());
-        detailsDTO.setType(account.getClass().getSimpleName());
-        detailsDTO.setCustomerDTO(customerMapper.toCustomerDto(account.getCustomer()));
-        return detailsDTO;
+    public AccountsOfCustomerDTO toCACustomerDTO(CurrentAccount account) {
+        CurrentAccountDTO accountDTO = new CurrentAccountDTO();
+        BeanUtils.copyProperties(account, accountDTO);
+     
+        accountDTO.setType(account.getClass().getSimpleName());
+        return accountDTO;
     }
 
 }

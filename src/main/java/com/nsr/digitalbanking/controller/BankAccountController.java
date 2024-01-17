@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nsr.digitalbanking.dto.bankAccountDto.BankAccountDTO;
 import com.nsr.digitalbanking.dto.bankAccountDto.CurrentAccountDTO;
-import com.nsr.digitalbanking.dto.bankAccountDto.CustomerAccDetailsDTO;
 import com.nsr.digitalbanking.dto.bankAccountDto.SavingAccountDTO;
 import com.nsr.digitalbanking.exception.AccountNotFoundException;
 import com.nsr.digitalbanking.exception.CustomerNotFoundException;
@@ -34,12 +33,6 @@ public class BankAccountController {
     @GetMapping("/{accountId}")
     public BankAccountDTO getAccount(@PathVariable String accountId) throws AccountNotFoundException {
         return service.getBankAccount(accountId);
-    }
-
-    @GetMapping("/customer/{accountId}")
-    public List<CustomerAccDetailsDTO> getAccountCustomers(@PathVariable Long accountId)
-            throws AccountNotFoundException {
-        return service.getCustomerAccounts(accountId);
     }
 
     @PostMapping("/sa")

@@ -1,15 +1,20 @@
 package com.nsr.digitalbanking.service.Impl;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.nsr.digitalbanking.dto.bankAccountDto.AccountsOfCustomerDTO;
 import com.nsr.digitalbanking.dto.customerDto.CustomerDTO;
 import com.nsr.digitalbanking.exception.CustomerNotFoundException;
+import com.nsr.digitalbanking.mapper.BankAccountMapper;
 import com.nsr.digitalbanking.mapper.CustomerMapper;
 import com.nsr.digitalbanking.model.BankAccount;
+import com.nsr.digitalbanking.model.CurrentAccount;
 import com.nsr.digitalbanking.model.Customer;
+import com.nsr.digitalbanking.model.SavingAccount;
 import com.nsr.digitalbanking.repository.BankAccountRepository;
 import com.nsr.digitalbanking.repository.CustomerRepository;
 import com.nsr.digitalbanking.service.CustomerService;
@@ -22,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomerServiceImp implements CustomerService {
 
     private CustomerMapper mapper;
+    private BankAccountMapper mapperAccount;
     private BankAccountRepository repoAccount;
     private CustomerRepository repoCustomer;
 
@@ -64,4 +70,32 @@ public class CustomerServiceImp implements CustomerService {
         getCustomer(customerID);
         repoCustomer.deleteById(customerID);
     }
+
+    @Override
+    public List<AccountsOfCustomerDTO> getAllCustomersWithAccounts() {
+
+        List<AccountsOfCustomerDTO> customers = new ArrayList<>();
+
+        List<Customer> allCustomers = repoCustomer.findAll();
+
+        for (Customer customer : allCustomers) {
+            List<BankAccount> customerAccounts = repoAccount.findByCustomerId(customer.getId());
+
+            AccountsOfCustomerDTO customerAccDetails = new AccountsOfCustomerDTO();
+            customerAccDetails.setCustomerDTO(mapper.toCustomerDto(customer));
+
+            for (BankAccount acc : customerAccounts) {
+                if (acc instanceof SavingAccount) {
+                    SavingAccount savingAccount = (SavingAccount) acc;
+                    customerAccDetails.getAccountsDto().add(mapperAccount.toSavingAccountDto(savingAccount));
+                } else if (acc instanceof CurrentAccount) {
+                    CurrentAccount currentAccount = (CurrentAccount) acc;
+                    customerAccDetails.getAccountsDto().add(mapperAccount.toCurrentAccountDTO(currentAccount));
+                }
+            }
+            customers.add(customerAccDetails);
+        }
+        return customers;
+    }
+
 }
