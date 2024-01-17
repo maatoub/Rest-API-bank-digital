@@ -1,5 +1,6 @@
 package com.nsr.digitalbanking.service.Impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nsr.digitalbanking.dto.bankAccountDto.BankAccountDTO;
 import com.nsr.digitalbanking.dto.bankAccountDto.CurrentAccountDTO;
+import com.nsr.digitalbanking.dto.bankAccountDto.CustomerAccDetailsDTO;
 import com.nsr.digitalbanking.dto.bankAccountDto.SavingAccountDTO;
 import com.nsr.digitalbanking.dto.customerDto.CustomerDTO;
 import com.nsr.digitalbanking.exception.AccountNotFoundException;
@@ -109,7 +111,8 @@ public class BankAccountServiceImp implements BankAccountService {
     }
 
     @Override
-    public CurrentAccountDTO updateCurrentAccount(CurrentAccountDTO currentAccountDto) throws CustomerNotFoundException {
+    public CurrentAccountDTO updateCurrentAccount(CurrentAccountDTO currentAccountDto)
+            throws CustomerNotFoundException {
         CurrentAccount currentAccount = mapper.toCurrentAccount(currentAccountDto);
         CustomerDTO customerDTO = customerService.getCustomer(currentAccountDto.getCustomerDto().getId());
         currentAccount.setCreatedAt(new Date());
@@ -119,5 +122,37 @@ public class BankAccountServiceImp implements BankAccountService {
         return saved;
     }
 
-    
+    @Override
+    public List<CustomerAccDetailsDTO> getCustomerAccounts(Long customerID) {
+        List<CustomerAccDetailsDTO> customers = new ArrayList<>();
+        repoBankAccount.findByCustomerId(customerID).stream().map((acc) -> {
+            if (acc instanceof SavingAccount) {
+                SavingAccount savingAccount = (SavingAccount) acc;
+                customers.add(mapper.toCustomerSavingAccountDto(savingAccount));
+                return mapper.toSavingAccountDto(savingAccount);
+            } else {
+                CurrentAccount currentAccount = (CurrentAccount) acc;
+                customers.add(mapper.toCustomerCurrentAccountDto(currentAccount));
+                return mapper.toCurrentAccountDTO(currentAccount);
+            }
+        }).collect(Collectors.toList());
+
+        return customers;
+    }
+
+    // @Override
+    // public List<BankAccountDTO> getCustomerAccounts(Long customerID) {
+    // List<BankAccountDTO> accounts =
+    // repoBankAccount.findByCustomerId(customerID).stream().map((acc) -> {
+    // if (acc instanceof SavingAccount) {
+    // SavingAccount savingAccount = (SavingAccount) acc;
+    // return mapper.toSavingAccountDto(savingAccount);
+    // } else {
+    // CurrentAccount currentAccount = (CurrentAccount) acc;
+    // return mapper.toCurrentAccountDTO(currentAccount);
+    // }
+    // }).collect(Collectors.toList());
+    // return accounts;
+    // }
+
 }

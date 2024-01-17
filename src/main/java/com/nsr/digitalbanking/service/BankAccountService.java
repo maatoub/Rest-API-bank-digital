@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.nsr.digitalbanking.dto.bankAccountDto.BankAccountDTO;
 import com.nsr.digitalbanking.dto.bankAccountDto.CurrentAccountDTO;
+import com.nsr.digitalbanking.dto.bankAccountDto.CustomerAccDetailsDTO;
 import com.nsr.digitalbanking.dto.bankAccountDto.SavingAccountDTO;
 import com.nsr.digitalbanking.exception.AccountNotFoundException;
 import com.nsr.digitalbanking.exception.CustomerNotFoundException;
@@ -23,4 +24,5 @@ public interface BankAccountService {
 
     void removeBankAccount(String accountID) throws AccountNotFoundException;
 
+    List<CustomerAccDetailsDTO> getCustomerAccounts(Long customerID);
 }
