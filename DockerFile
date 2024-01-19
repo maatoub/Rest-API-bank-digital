@@ -1,0 +1,5 @@
+FROM openjdk:17-jdk-alpine
+VOLUME [ "/tmp" ]
+ADD target/digital-banking*.jar /digital-bank-api.jar
+CMD [ "java","-jar","digital-bank-api.jar" ]
+EXPOSE 8080
