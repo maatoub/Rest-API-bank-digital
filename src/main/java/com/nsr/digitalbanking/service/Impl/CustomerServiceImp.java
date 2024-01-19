@@ -87,10 +87,12 @@ public class CustomerServiceImp implements CustomerService {
             for (BankAccount acc : customerAccounts) {
                 if (acc instanceof SavingAccount) {
                     SavingAccount savingAccount = (SavingAccount) acc;
-                    customerAccDetails.getAccountsDto().add(mapperAccount.toSavingAccountDto(savingAccount));
-                } else if (acc instanceof CurrentAccount) {
+                    customerAccDetails.getAccountsDto()
+                            .add(mapperAccount.toSACustomerDTO(savingAccount));
+                } else {
                     CurrentAccount currentAccount = (CurrentAccount) acc;
-                    customerAccDetails.getAccountsDto().add(mapperAccount.toCurrentAccountDTO(currentAccount));
+                    customerAccDetails.getAccountsDto()
+                            .add(mapperAccount.toCACustomerDTO(currentAccount));
                 }
             }
             customers.add(customerAccDetails);

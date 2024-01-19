@@ -48,9 +48,8 @@ public class CustomerController {
     }
 
     @DeleteMapping("/delete/{customerId}")
-    public String deleteCustomer(@PathVariable Long customerId) throws CustomerNotFoundException {
+    public void deleteCustomer(@PathVariable Long customerId) throws CustomerNotFoundException {
         customerService.deleteCustomer(customerId);
-        return "Customer deleted successfully";
     }
 
     @GetMapping("/accounts")

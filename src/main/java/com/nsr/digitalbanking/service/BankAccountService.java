@@ -5,6 +5,7 @@ import java.util.List;
 import com.nsr.digitalbanking.dto.bankAccountDto.BankAccountDTO;
 import com.nsr.digitalbanking.dto.bankAccountDto.CurrentAccountDTO;
 import com.nsr.digitalbanking.dto.bankAccountDto.SavingAccountDTO;
+import com.nsr.digitalbanking.exception.AccountExistsException;
 import com.nsr.digitalbanking.exception.AccountNotFoundException;
 import com.nsr.digitalbanking.exception.CustomerNotFoundException;
 
@@ -13,7 +14,7 @@ public interface BankAccountService {
 
     BankAccountDTO getBankAccount(String accountID) throws AccountNotFoundException;
 
-    SavingAccountDTO addSavingAccount(SavingAccountDTO savingAccount) throws CustomerNotFoundException;
+    SavingAccountDTO addSavingAccount(SavingAccountDTO savingAccount) throws CustomerNotFoundException, AccountExistsException;
 
     CurrentAccountDTO addCurrentAccount(CurrentAccountDTO currentAccount) throws CustomerNotFoundException;
 

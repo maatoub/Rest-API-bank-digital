@@ -11,6 +11,7 @@ import com.nsr.digitalbanking.dto.bankAccountDto.BankAccountDTO;
 import com.nsr.digitalbanking.dto.bankAccountDto.CurrentAccountDTO;
 import com.nsr.digitalbanking.dto.bankAccountDto.SavingAccountDTO;
 import com.nsr.digitalbanking.dto.customerDto.CustomerDTO;
+import com.nsr.digitalbanking.exception.AccountExistsException;
 import com.nsr.digitalbanking.exception.AccountNotFoundException;
 import com.nsr.digitalbanking.exception.CustomerNotFoundException;
 import com.nsr.digitalbanking.mapper.BankAccountMapper;
@@ -66,16 +67,43 @@ public class BankAccountServiceImp implements BankAccountService {
     }
 
     @Override
-    public SavingAccountDTO addSavingAccount(SavingAccountDTO savingAccountDto) throws CustomerNotFoundException {
+    public SavingAccountDTO addSavingAccount(SavingAccountDTO savingAccountDto)
+            throws CustomerNotFoundException, AccountExistsException {
         SavingAccount savingAccount = mapper.toSavingAccount(savingAccountDto);
         CustomerDTO customerDTO = customerService.getCustomer(savingAccountDto.getCustomerDto().getId());
+        List<BankAccount> accountsCustomer = repoBankAccount.findByCustomerId(savingAccount.getCustomer().getId());
+       if(!accountsCustomer.isEmpty()){
+        
+       }
+        for (BankAccount acc : accountsCustomer) {
+            if (acc instanceof SavingAccount) {
+                 throw new AccountExistsException("Customer already has an account");
+            }
+        }
+
         savingAccount.setId(UUID.randomUUID().toString());
         savingAccount.setCustomer(cusMapper.toCustomer(customerDTO));
         savingAccount.setCreatedAt(new Date());
         repoBankAccount.save(savingAccount);
         SavingAccountDTO saveDto = mapper.toSavingAccountDto(savingAccount);
+
         return saveDto;
     }
+
+    // @Override
+    // public SavingAccountDTO addSavingAccount(SavingAccountDTO savingAccountDto)
+    // throws CustomerNotFoundException {
+    // SavingAccount savingAccount = mapper.toSavingAccount(savingAccountDto);
+    // CustomerDTO customerDTO =
+    // customerService.getCustomer(savingAccountDto.getCustomerDto().getId());
+
+    // savingAccount.setId(UUID.randomUUID().toString());
+    // savingAccount.setCustomer(cusMapper.toCustomer(customerDTO));
+    // savingAccount.setCreatedAt(new Date());
+    // repoBankAccount.save(savingAccount);
+    // SavingAccountDTO saveDto = mapper.toSavingAccountDto(savingAccount);
+    // return saveDto;
+    // }
 
     @Override
     public CurrentAccountDTO addCurrentAccount(CurrentAccountDTO currentAccountDto) throws CustomerNotFoundException {
@@ -120,5 +148,4 @@ public class BankAccountServiceImp implements BankAccountService {
         return saved;
     }
 
-    
 }

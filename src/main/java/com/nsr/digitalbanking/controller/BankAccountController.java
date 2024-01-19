@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nsr.digitalbanking.dto.bankAccountDto.BankAccountDTO;
 import com.nsr.digitalbanking.dto.bankAccountDto.CurrentAccountDTO;
 import com.nsr.digitalbanking.dto.bankAccountDto.SavingAccountDTO;
+import com.nsr.digitalbanking.exception.AccountExistsException;
 import com.nsr.digitalbanking.exception.AccountNotFoundException;
 import com.nsr.digitalbanking.exception.CustomerNotFoundException;
 import com.nsr.digitalbanking.service.BankAccountService;
@@ -37,7 +38,7 @@ public class BankAccountController {
 
     @PostMapping("/sa")
     public SavingAccountDTO saveSavingAccount(@RequestBody SavingAccountDTO savingAccount)
-            throws CustomerNotFoundException {
+            throws CustomerNotFoundException, AccountExistsException {
         return service.addSavingAccount(savingAccount);
     }
 
@@ -62,8 +63,7 @@ public class BankAccountController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public String deleteAccount(@PathVariable String id) throws AccountNotFoundException {
+    public void deleteAccount(@PathVariable String id) throws AccountNotFoundException {
         service.removeBankAccount(id);
-        return "Account " + id + " has been deleted";
     }
 }

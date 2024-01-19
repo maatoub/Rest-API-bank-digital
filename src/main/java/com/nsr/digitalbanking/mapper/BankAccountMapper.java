@@ -4,7 +4,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.nsr.digitalbanking.dto.bankAccountDto.CurrentAccountDTO;
-import com.nsr.digitalbanking.dto.bankAccountDto.AccountsOfCustomerDTO;
 import com.nsr.digitalbanking.dto.bankAccountDto.SavingAccountDTO;
 import com.nsr.digitalbanking.model.CurrentAccount;
 import com.nsr.digitalbanking.model.SavingAccount;
@@ -47,16 +46,22 @@ public class BankAccountMapper {
         return account;
     }
 
-    public AccountsOfCustomerDTO toSACustomerDTO(SavingAccount account) {
-        AccountsOfCustomerDTO aCustomerDTO = new AccountsOfCustomerDTO();
-        
-        return aCustomerDTO;
+    /************************************ */
+
+    public SavingAccountDTO toSACustomerDTO(SavingAccount account) {
+        SavingAccountDTO accountDTO = new SavingAccountDTO();
+        accountDTO.setId(account.getId());
+        accountDTO.setStatus(account.getStatus());
+        accountDTO.setCreatedAt(account.getCreatedAt());
+        accountDTO.setType(account.getClass().getSimpleName());
+        return accountDTO;
     }
 
-    public AccountsOfCustomerDTO toCACustomerDTO(CurrentAccount account) {
+    public CurrentAccountDTO toCACustomerDTO(CurrentAccount account) {
         CurrentAccountDTO accountDTO = new CurrentAccountDTO();
-        BeanUtils.copyProperties(account, accountDTO);
-     
+        accountDTO.setId(account.getId());
+        accountDTO.setStatus(account.getStatus());
+        accountDTO.setCreatedAt(account.getCreatedAt());
         accountDTO.setType(account.getClass().getSimpleName());
         return accountDTO;
     }
