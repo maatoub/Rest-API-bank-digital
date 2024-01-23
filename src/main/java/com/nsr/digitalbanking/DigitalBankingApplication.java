@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,6 +25,7 @@ public class DigitalBankingApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DigitalBankingApplication.class, args);
+	
 	}
 
 	//@Bean
