@@ -17,10 +17,8 @@ services:
         - curl
         - '-f'
         - 'http://localhost:8080/actuator/health'
-      interval: 1m30s
-      timeout: 30s
+      interval: 10s
       retries: 5
-      start_period: 30s
     depends_on:
       db:
         condition: service_healthy
@@ -35,9 +33,8 @@ services:
       - 'db_data:/var/lib/mysql'
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
-      interval: 1m30s
-      timeout: 10s
-      retries: 3
+      interval: 10s
+      retries: 5
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     ports:
