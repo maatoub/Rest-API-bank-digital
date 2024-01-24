@@ -6,44 +6,45 @@ services:
       dockerfile: Dockerfile
     container_name: ebank-digital-api
     environment:
-      - DB_URL=jdbc:mysql://db:3306/digital-bank
+      - 'DB_URL=jdbc:mysql://db:3306/digital-bank'
       - DB_USERNAME=root
       - DB_PASSWORD=pasroot
     ports:
-      - "8080:8080"
+      - '8080:8080'
     healthcheck:
       test:
-        [
-          "CMD",
-          "curl",
-          "-f",
-          "http://localhost:8080/actuator/health"
-        ]
+        - CMD
+        - curl
+        - '-f'
+        - 'http://localhost:8080/actuator/health'
       interval: 1m30s
       timeout: 30s
       retries: 5
       start_period: 30s
     depends_on:
-      - db
-
+      db:
+        condition: service_healthy
   db:
-    image: mysql:latest
+    image: 'mysql:latest'
     environment:
       MYSQL_ROOT_PASSWORD: pasroot
       MYSQL_DATABASE: digital-bank
     ports:
-      - "3306:3306"
+      - '3306:3306'
     volumes:
-      - db_data:/var/lib/mysql
-
+      - 'db_data:/var/lib/mysql'
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     ports:
-      - "8081:80"
+      - '8081:80'
     environment:
       PMA_HOST: db
       PMA_PORT: 3306
       MYSQL_USER: root
-
 volumes:
-  db_data:
+  db_data: null
