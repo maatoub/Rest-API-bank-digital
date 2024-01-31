@@ -1,47 +1,45 @@
-version: '3.1'
 services:
-  ebank-api:
+  ebank-back:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: ebank-digital-api
+    restart: always
     environment:
-      - 'DB_URL=jdbc:mysql://db:3306/digital-bank'
+      - DB_URL=jdbc:mysql://maria_db:3306/digital-bank
       - DB_USERNAME=root
       - DB_PASSWORD=pasroot
     ports:
       - '8080:8080'
     healthcheck:
-      test:
-        - CMD
-        - curl
-        - '-f'
-        - 'http://localhost:8080/actuator/health'
+      test: ["CMD", "mysql", "-h", "maria_db", "-e", "SELECT 1"]
       interval: 10s
-      retries: 5
+      timeout: 5s
+      retries: 3
+      start_period: 20s
     depends_on:
-      db:
-        condition: service_healthy
-  db:
-    image: 'mysql:latest'
+      - maria_db
+        #condition: service_healthy
+  maria_db:
+    image: mariadb:latest
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: pasroot
       MYSQL_DATABASE: digital-bank
     ports:
       - '3306:3306'
     volumes:
-      - 'db_data:/var/lib/mysql'
+      - db_data:/var/lib/mysql
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
-      interval: 10s
-      retries: 5
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
+      test: ["CMD", "mysqladmin", "ping", "-h", "db"]
+      interval: 1m30s
+      timeout: 60s
+      retries: 3
+      start_period: 20s
+  ebank-front:
+    image: ebank-front
+    depends_on:
+      - ebank-back
     ports:
-      - '8081:80'
-    environment:
-      PMA_HOST: db
-      PMA_PORT: 3306
-      MYSQL_USER: root
+      - "5173:80"
 volumes:
-  db_data: null
+  db_data:
